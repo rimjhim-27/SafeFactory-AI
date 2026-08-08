@@ -1,0 +1,16 @@
+venv/
+__pycache__/
+*.py[cod]
+
+runs/
+*.pt
+*.onnx
+
+PPE detection - yolo-11.v1i.yolov8/
+dataset/
+*.zip
+
+.streamlit/
+.vscode/
+.DS_Store
+Thumbs.db
