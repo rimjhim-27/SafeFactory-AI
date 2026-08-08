@@ -1,0 +1,119 @@
+SafeFactory AI
+From Seeing Hazards to Reasoning About Safety.
+Explainable Neuro-Symbolic AI for Industrial Safety Monitoring
+Project Documentation
+Rimjhim Rani | ML Bubble 2026 – Army Institute of Technology, Pune
+ 
+1. Abstract
+SafeFactory AI is a computer-vision and rule-based safety monitoring prototype designed to convert visual PPE detections into explainable industrial safety decisions. The system uses a YOLO11n object-detection model trained on a PPE dataset to detect helmet, mask and vest classes. These detections are combined with contextual safety conditions such as machine activity and hazard-zone status through a symbolic rule engine. The result is a safety classification with an explanation and recommended action.
+2. Problem Statement
+Traditional computer-vision systems can detect objects but may not determine whether a detected situation constitutes a safety violation. Industrial safety decisions often depend on multiple contextual facts—for example, whether a worker is inside a hazardous zone, whether machinery is active, and whether required PPE is present. SafeFactory AI addresses this gap by combining neural perception with explicit safety rules.
+3. Objectives
+•	Detect safety-related PPE objects using a YOLO-based computer-vision model.
+•	Convert visual detections into structured safety facts.
+•	Apply explicit symbolic rules to classify safety conditions.
+•	Generate human-readable explanations for triggered rules.
+•	Provide recommended safety actions through an interactive dashboard.
+•	Create a modular architecture that can later support CCTV streams, sensors and additional safety models.
+4. Proposed Solution
+The prototype follows a Neuro-Symbolic architecture. The neural component performs visual perception, while the symbolic component performs deterministic safety reasoning.
+1.	Factory image / camera input
+2.	YOLO11n visual perception
+3.	PPE detections: helmet, mask, vest
+4.	Structured safety facts
+5.	Symbolic safety rule engine
+6.	Safety severity classification
+7.	Explainable alert and recommended action
+8.	Streamlit user interface
+5. Neuro-Symbolic Design
+Neural perception
+The YOLO11n model identifies visual safety objects in an image. The trained prototype contains three target classes: helmet, mask and vest.
+Symbolic reasoning
+The rule engine combines model outputs with contextual conditions. This makes the decision process explicit and auditable rather than relying only on a black-box class label.
+Example safety rule
+RULE-002: IF a worker is detected AND the machine is active AND the worker is inside a hazardous zone AND the required safety vest is not detected, THEN classify the situation as HIGH SAFETY RISK and recommend removing the worker from the hazardous zone.
+6. Dataset
+Dataset: PPE Detection – YOLO-11
+•	Total images: 650
+•	Training set: 629 images
+•	Validation set: 15 images
+•	Test set: 6 images
+•	Classes: helmet, mask, vest
+•	Task: object detection
+•	Annotation format: YOLO-compatible
+The dataset was prepared as a versioned Roboflow dataset and exported in a YOLO-compatible format for local model training.
+7. Model & Training
+•	Model architecture: YOLO11n
+•	Parameters: approximately 2.58 million
+•	Compute: CPU-based local training environment
+•	Image size used for evaluation: 640 × 640
+•	Training epochs: 10
+•	Framework: Ultralytics YOLO
+•	Inference interface: Streamlit application
+8. Model Performance
+Validation results from the trained prototype:
+Class	Precision	Recall	mAP@50	mAP@50-95
+Overall	86.1%	79.0%	83.5%	52.0%
+Helmet	94.0%	100.0%	97.6%	61.1%
+Mask	99.6%	71.4%	76.1%	46.9%
+Vest	64.8%	65.7%	76.6%	48.0%
+Important evaluation note: the current validation split contains 15 images. These results demonstrate prototype feasibility but should not be interpreted as production-level accuracy. A larger and more diverse industrial validation set is required before deployment.
+9. Prototype Demonstration
+Safe scenario
+•	Workers detected: 5
+•	Helmet: detected
+•	Vest: detected
+•	Machine: active
+•	Hazard zone: active
+•	Result: No Critical Safety Violation
+Safety-risk scenario
+•	Worker detected: 1
+•	Helmet: detected
+•	Vest: missing
+•	Machine: active
+•	Hazard zone: active
+•	Result: HIGH SAFETY RISK
+•	Triggered rule: RULE-002
+•	Explanation: Worker detected inside an active hazardous zone without the required safety vest.
+•	Recommended action: Remove worker from the hazardous zone.
+10. Technology Stack
+•	Python
+•	Ultralytics YOLO
+•	OpenCV
+•	Pillow
+•	Streamlit
+•	Rule-based symbolic reasoning
+•	Roboflow dataset/versioning
+•	VS Code development environment
+11. System Architecture
+Input Image / Camera → YOLO11n → PPE Detections → Structured Safety Facts → Symbolic Rule Engine → Safety Decision → Explanation & Recommended Action → Streamlit Dashboard
+12. Key Innovation
+The core contribution is not simply using YOLO for object detection. The project connects neural visual perception with explicit symbolic safety reasoning. This allows the system to move from 'what is visible?' to 'what does this situation mean for safety, why was the rule triggered, and what should happen next?'
+13. Limitations
+•	The current prototype works with uploaded images rather than a live CCTV stream.
+•	Machine activity and hazard-zone status are currently provided as structured dashboard inputs.
+•	The validation set is small (15 images).
+•	The current dataset covers helmet, mask and vest, but not all possible industrial hazards.
+•	The prototype is a decision-support demonstration and does not directly control industrial machinery.
+14. Future Scope
+•	Real-time CCTV/video monitoring
+•	Dedicated PPE and hazard-zone detection
+•	IoT sensor integration for temperature, machine state and proximity
+•	Multi-camera factory-wide monitoring
+•	Automated alerts and notifications
+•	Historical safety analytics and trend detection
+•	Edge deployment for low-latency inference
+•	Larger, more diverse industrial datasets and robust evaluation
+•	Integration with enterprise safety-management systems
+15. Conclusion
+SafeFactory AI demonstrates how computer vision can be combined with symbolic reasoning to create explainable industrial safety intelligence. The working prototype detects PPE, evaluates contextual safety rules, classifies risk and communicates why a safety condition was triggered. The modular architecture provides a foundation for future real-time and sensor-integrated industrial safety systems.
+16. Reproducibility / Project Structure
+Suggested project structure:
+•	app.py — Streamlit application and inference interface
+•	safety_engine.py — symbolic safety rules
+•	requirements.txt — Python dependencies
+•	PPE detection - yolo-11.v1i.yolov8/ — dataset and YOLO annotations
+•	runs/detect/train/weights/best.pt — trained model weights
+•	runs/detect/val/ — validation outputs
+•	screenshots/ — demonstration screenshots
+The source code, dataset details, model metrics and project documentation should be submitted together with the GitHub repository link as required by the hackathon.
